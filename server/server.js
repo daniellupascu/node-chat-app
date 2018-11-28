@@ -16,14 +16,19 @@ io.on('connection', socket => {
         console.log('Disconected from the server');
     });
     
-    socket.emit('newMessage', {
-        from: 'server',
-        text: 'message from server',
-        createdAt: new Date().getTime()
-    });
+    // socket.emit('newMessage', {
+    //     from: 'server',
+    //     text: 'message from server',
+    //     createdAt: new Date().getTime()
+    // });
 
     socket.on('createMessage', data => {
         console.log(data);
+        io.emit('newMessage', {
+            from: data.from,
+            text: data.text,
+            createdAt: new Date().getTime()
+        })
     }); 
 
 });
