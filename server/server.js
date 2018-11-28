@@ -15,8 +15,18 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         console.log('Disconected from the server');
     });
-});
+    
+    socket.emit('newMessage', {
+        from: 'server',
+        text: 'message from server',
+        createdAt: new Date().getTime()
+    });
 
+    socket.on('createMessage', data => {
+        console.log(data);
+    }); 
+
+});
 
 let port = process.env.PORT || 3000;
 
