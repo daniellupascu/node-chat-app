@@ -1,17 +1,26 @@
 const path = require('path');
+const http = require('http');
 const express = require('express');
+const socketIO = require('socket.io');
 
 const app = express();
+let server = http.createServer(app);
+let io = socketIO(server);
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-let port = process.env.PORT || 3000;
+io.on('connection', socket => {
+    console.log('New user connected');
 
-app.listen(port, () => {
-    console.log(`app running on port ${port}`);
+    socket.on('disconnect', () => {
+        console.log('Disconected from the server');
+    });
 });
 
-// const publicPath = path.join(__dirname, '../public');
 
-// console.log(__dirname + '/public');
-// console.log(publicPath);
+let port = process.env.PORT || 3000;
+
+server.listen(port, () => {
+    console.log(`app running on port ${port}`);
+});
+ 
