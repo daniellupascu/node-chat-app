@@ -31,11 +31,20 @@ socket.on('disconnect', function() {
     console.log('Disconected from the server');
 });
 
+socket.on('updateUserList', function(users) {
+    console.log('User list', users);
+    let ol = $('<ol></ol>');
+    users.forEach(function(user) {
+        ol.append($('<li></li>').text(user));
+    });
+    $('#users').append(ol);
+});
+
 socket.on('newMessage', function(data) {
 
     let formattedTime = moment(data.createdAt).format('h:mm a');
     let template = $('#message-template').html();
-    let html = Mustache.render(template, {
+    let html = Mustache.render(template, { 
         text: data.text,
         time: formattedTime,
         from: data.from
